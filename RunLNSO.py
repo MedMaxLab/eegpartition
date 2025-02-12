@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     help_d = """
     RunLNSO runs a set of trainings based on all the possible combinations
-    of values written in the 'PIPE_args' dictionary (line 73-88).
+    of values written in the 'PIPE_args' dictionary.
     To keep the code base similar to other scripts of the RunKfold family,
     the path can be given as usual.
     Other parameters can be set by manually changing the code base.
@@ -94,18 +94,18 @@ if __name__ == '__main__':
     dataPathInput = args['dataPath']
     StartIdx = args['start_idx']
     if dataPathInput is None:
-        dataPathInput = "/data/delpup/eegpickle/"
+        dataPathInput = "/data/delpup/datasets/eegpickle/"
 
     pipes = ["filt",      "ica",     "icasr"]
     tasks = ["bci", "parkinson", "alzheimer"]
-
+    
     arg_list = []
     for pipe, task in zip(pipes,tasks):
         PIPE_args = {
             "dataPath": [dataPathInput],
             "pipelineToEval": [pipe],
             "taskToEval": [task],
-            "modelToEval": ["resnet"],
+            "modelToEval": ["shallownet", "eegnet", "deepconvnet", "resnet"],
             "kfoldstrat": ["lnso"],
             "downsample": [True],
             "z_score": [True],

@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     help_d = """
     RunLOSO runs a set of trainings based on all the possible combinations
-    of values written in the 'PIPE_args' dictionary (line 73-88).
+    of values written in the 'PIPE_args' dictionary.
     To keep the code base similar to other scripts of the RunKfold family,
     the path can be given as usual.
     Other parameters can be set by manually changing the code base.
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     dataPathInput = args['dataPath']
     StartIdx = args['start_idx']
     if dataPathInput is None:
-        dataPathInput = '/data/delpup/eegpickle/'
+        dataPathInput = '/data/delpup/datasets/eegpickle/'
     
     pipes = ["filt",      "ica",     "icasr"]
     tasks = ["bci", "parkinson", "alzheimer"]
@@ -106,26 +106,20 @@ if __name__ == '__main__':
         taskToEval = task
         if taskToEval == 'alzheimer':
             Nsubj = 88
-        elif taskToEval == 'alzheimerca':
-            Nsubj = 65
-        elif taskToEval == 'alzheimercf':
-            Nsubj = 52
-        elif taskToEval == 'alzheimeraf':
-            Nsubj = 59
         elif taskToEval == 'parkinson':
             Nsubj = 81
-        elif taskToEval == 'cognitive':
-            Nsubj = 149
-        elif taskToEval == 'motorimagery':
-            Nsubj = 106
         elif taskToEval == 'bci':
             Nsubj = 106
+        elif taskToEval == 'psychosis':
+            Nsubj = 61
+        elif taskToEval == 'sleep':
+            Nsubj = 71
         
         PIPE_args = {
             "dataPath": [dataPathInput],
             "pipelineToEval": [pipe],
             "taskToEval": [task],
-            "modelToEval": ["resnet"],#["shallownet", "deepconvnet", "resnet"],
+            "modelToEval": ["shallownet", "eegnet", "deepconvnet", "resnet"],
             "kfoldstrat": ["loso"],
             "downsample": [True],
             "z_score": [True],
@@ -134,7 +128,7 @@ if __name__ == '__main__':
             "window": [4.0],
             "overlap": [0.0],
             "workers": [0],
-            "verbose": [False],
+            "verbose": [True],
             "gpudevice": ["cuda:0"],
             "lr": [0.0],
             "inner": [1],

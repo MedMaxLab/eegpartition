@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     help_d = """
     RunNLOSO runs a set of trainings based on all the possible combinations
-    of values written in the 'PIPE_args' dictionary (line 73-88).
+    of values written in the 'PIPE_args' dictionary.
     To keep the code base similar to other scripts of the RunKfold family,
     the path can be given as usual.
     Other parameters can be set by manually changing the code base.
@@ -122,8 +122,8 @@ if __name__ == '__main__':
     StartIdx = args['start_idx']
     EndIdx = args['end_idx']
     if dataPathInput is None:
-        dataPathInput = '/data/delpup/eegpickle/'
-    
+        dataPathInput = '/data/delpup/datasets/eegpickle/'
+
     pipes = ["filt",       "ica",     "icasr"]
     tasks = [ "bci", "parkinson", "alzheimer"]
 
@@ -137,12 +137,16 @@ if __name__ == '__main__':
             Nsubj = 81
         elif taskToEval == 'bci':
             Nsubj = 106
+        elif taskToEval == 'psychosis':
+            Nsubj = 61
+        elif taskToEval == 'sleep':
+            Nsubj = 71
         
         PIPE_args = {
             "dataPath": [dataPathInput],
             "pipelineToEval": [pipe],
             "taskToEval": [task],
-            "modelToEval": ["resnet"], #, "resnet"],
+            "modelToEval": ["shallowconvnet", "eegnet", "deepconvnet", "resnet"],
             "kfoldstrat": ["nloso"],
             "downsample": [True],
             "z_score": [True],
@@ -154,8 +158,8 @@ if __name__ == '__main__':
             "gpudevice": ["cuda:0"],
             "verbose": [False],
             "lr": [0.0],
-            "inner": [i for i in range(1, Nsubj)], #[103],
-            "outer": [i for i in range(1, Nsubj+1)] #[i for i in range(8, 44)],
+            "inner": [i for i in range(1, Nsubj)],
+            "outer": [i for i in range(1, Nsubj+1)]
         }
         # create the argument grid and discard impossible combinations
         arg_list += makeGrid(PIPE_args)

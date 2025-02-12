@@ -166,26 +166,43 @@ def gather_results(save = False, filename = None):
         results_table.to_csv('ResultsTable.csv', index=False)
     return results_table
 
-
 def GetLrDict():
     lr_dict = {
+        'eegnet': {
+            'eyes': 5e-04,
+            'parkinson': 1e-04,
+            'alzheimer': 7.5e-04,
+            'bci': 1e-03,
+            'sleep': 1e-03,
+            'psychosis': 1e-04,
+            'ssvep': 7.5e-04
+        },
         'shallownet': {
             'eyes': 1e-03,
-            'parkinson': 2.5e-04, #2.5e-05
+            'parkinson': 2.5e-04,
             'alzheimer': 5e-05,
-            'bci': 7.5e-04
+            'bci': 7.5e-04,
+            'sleep': 5e-05,
+            'psychosis': 7.5e-05,
+            'ssvep': 7.5e-04
         },
         'deepconvnet': {
             'eyes': 7.5e-04,
             'parkinson': 2.5e-04,
             'alzheimer': 7.5e-04,
-            'bci': 7.5e-04
+            'bci': 7.5e-04,
+            'sleep': 2.5e-04,
+            'psychosis': 1e-03,
+            'ssvep': 1e-03
         },
         'resnet': {
             'eyes': 5e-04,
             'parkinson': 1e-05,
             'alzheimer': 5e-05,
-            'bci': 5e-4
+            'bci': 5e-4,
+            'sleep': 5e-05,
+            'psychosis': 5e-05,
+            'ssvep': 1e-03
         }
     }
     return lr_dict
@@ -195,12 +212,16 @@ def GetLearningRateString(model, task):
     model_conversion_dict = {
         'shn': 'shallownet',
         'dcn': 'deepconvnet',
-        'res': 'resnet'
+        'res': 'resnet',
+        'egn': 'eegnet'
     }
     task_conversion_dict = {
         'alz': 'alzheimer',
-        'bci':'bci',
-        'pds': 'parkinson'
+        'bci': 'bci',
+        'pds': 'parkinson',
+        'svp': 'ssvep',
+        'slp': 'sleep',
+        'fep': 'psychosis'
     }
     if len(model)==3:
         model = model_conversion_dict.get(model)
@@ -216,10 +237,14 @@ def get_full_name(acronym):
     conversion_dict = {
         'shn': 'ShallowConvNet',
         'dcn': 'DeepConvNet',
+        'egn': 'EEGNet',
         'res': 'T-ResNet',
         'alz': 'Alzheimer', 
         'bci': 'BCI',
         'pds': 'Parkinson',
+        'fep': 'First Episode Psychosis',
+        'slp': 'Sleep Deprivation',
+        'svp': 'SSVEP',
         'KFOLD': 'Sample-based Cross-Validation',
         'LNSO': 'Leave-N-Subjects-Out',
         'LOSO': 'Leave-One-Subject-Out',
@@ -243,8 +268,14 @@ def gather_metric_values(metric, task, model, partition, validation=False, test=
     for i in task:
         if i =='pds': 
             ch = '032'
+        elif i == 'fep':
+            ch = '056'
+        elif i == 'slp':
+            ch = '059'
         elif 'al' in i:
             ch = '019'
+        elif i == 'svp':
+            ch = '056'
         else:
             ch = '061' 
         for j in model:
@@ -306,7 +337,9 @@ def convert_performance_totable(
     Nsubj = {
         'alz': 88,
         'pds': 81,
-        'bci': 106
+        'bci': 106,
+        'fep': 61,
+        'slp': 71
     }
     df = 0
     cdf = 0

@@ -43,21 +43,21 @@ def run_single_training(arg_dict, custom_env = None):
 if __name__ == '__main__':
 
     my_env = os.environ.copy()
-    my_env["OMP_NUM_THREADS"] = "10" # export OMP_NUM_THREADS=4
-    my_env["OPENBLAS_NUM_THREADS"] = "10" # export OPENBLAS_NUM_THREADS=4 
-    my_env["MKL_NUM_THREADS"] = "10" # export MKL_NUM_THREADS=6
+    my_env["OMP_NUM_THREADS"] = "10"        # export OMP_NUM_THREADS=4
+    my_env["OPENBLAS_NUM_THREADS"] = "10"   # export OPENBLAS_NUM_THREADS=4 
+    my_env["MKL_NUM_THREADS"] = "10"        # export MKL_NUM_THREADS=6
     my_env["VECLIB_MAXIMUM_THREADS"] = "10" # export VECLIB_MAXIMUM_THREADS=4
-    my_env["NUMEXPR_NUM_THREADS"] = "10" # export NUMEXPR_NUM_THREADS=6
+    my_env["NUMEXPR_NUM_THREADS"] = "10"    # export NUMEXPR_NUM_THREADS=6
 
     help_d = """
     RunNKFold runs a set of trainings based on all the possible combinations
-    of values written in the 'PIPE_args' dictionary (line 73-88).
+    of values written in the 'PIPE_args' dictionary.
     To keep the code base similar to other scripts of the RunKfold family,
     the path can be given as usual.
     Other parameters can be set by manually changing the code base.
     If a run fails you can restart the code and give the starting index of the
     for loop.
-    This is for Nested sample-based K-Fold CV CV.
+    This is for Nested sample-based K-Fold CV.
     
     Example of first call:
     
@@ -142,7 +142,7 @@ if __name__ == '__main__':
             "dataPath": [dataPathInput],
             "pipelineToEval": [pipe],
             "taskToEval": [task],
-            "modelToEval": ["shallownet", "deepconvnet", "resnet"],
+            "modelToEval": ["shallownet", "eegnet", "deepconvnet", "resnet"],
             "kfoldstrat": ["nkfld"],
             "downsample": [True],
             "z_score": [True],
@@ -151,7 +151,7 @@ if __name__ == '__main__':
             "window": [4.0],
             "overlap": [0.0],
             "workers": [0],
-            "gpudevice": ["cuda:1"],
+            "gpudevice": ["cuda:0"],
             "verbose": [False],
             "lr": [0.0],
             "inner": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],

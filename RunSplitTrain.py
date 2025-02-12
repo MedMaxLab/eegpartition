@@ -126,10 +126,10 @@ if __name__ == '__main__':
         nargs     = '?',
         required  = False,
         default   = 'alzheimer',
-        choices   =['alzheimer', 'parkinson', 'bci'],
+        choices   =['alzheimer', 'parkinson', 'bci', 'sleep', 'psychosis'],
         help      = """
         The task to evaluate. It can be one of the following:
-        1) alzheimer; 2) parkinson; 3) bci;
+        1) alzheimer; 2) parkinson; 3) bci; 4) sleep; 5) psychosis
         """,
     )
     parser.add_argument(
@@ -141,10 +141,10 @@ if __name__ == '__main__':
         nargs     = '?',
         required  = False,
         default   = 'shallownet',
-        choices   =['shallownet', 'deepconvnet', 'resnet'],
+        choices   =['shallownet', 'deepconvnet', 'resnet', 'eegnet'],
         help      = """
         The model to evaluate. It can be one of the following:
-        1) shallownet; 2) deepconvnet; 3) resnet;
+        1) shallownet; 2) deepconvnet; 3) resnet; 4) eegnet
         """,
     )
     parser.add_argument(
@@ -370,7 +370,7 @@ if __name__ == '__main__':
 
     seed = 83136297
     
-    if taskToEval == 'bci' and window>4.1:
+    if taskToEval == 'bci' and window > 4.1:
         raise ValueError(
             'bci task has trials of length 4.1 seconds. Cannot exceed this number'
         )
@@ -387,6 +387,10 @@ if __name__ == '__main__':
         Nsubj = 81
     elif taskToEval == 'bci':
         Nsubj = 106
+    elif taskToEval == 'psychosis':
+        Nsubj = 61
+    elif taskToEval == 'sleep':
+        Nsubj = 71
     
 
     # we need to distinguish between cross-validation methods
@@ -399,8 +403,11 @@ if __name__ == '__main__':
     
         # to run a lnso, just fix inner to 1 
         foldToEval = outerFold*Ninner + innerFold
-        
-        if taskToEval == 'alzheimer':
+
+        if taskToEval.casefold() == 'sleep':
+            partition_list = split.create_nested_kfold_subject_split(Nsubj, Nouter, Ninner)
+            
+        elif taskToEval == 'alzheimer':
             a_id = [i for i in range(1,37)]  # ALZ = subjects 1 to 36;
             c_id = [i for i in range(37,66)] # CTL = subjects 37 to 65;
             f_id = [i for i in range(66,89)] # FTD = subjects 66 to 88;
@@ -427,6 +434,15 @@ if __name__ == '__main__':
             part_c = split.create_nested_kfold_subject_split([i for i in range(1,17)], Nouter, Ninner)
             part_p = split.create_nested_kfold_subject_split([i for i in range(17,32)], Nouter, Ninner)
             partition_list_2 = split.merge_partition_lists(part_c, part_p, Nouter, Ninner)
+
+        elif taskToEval.casefold() == 'psychosis':
+            ctl_id = [1, 3, 4, 9, 10, 12, 13, 14, 17, 19, 21, 22, 24, 25, 27, 29, 30,
+                      31, 35, 38, 39, 41, 43, 46, 48, 49, 53, 55, 58, 59]
+            psy_id = [2, 5, 6, 7, 8, 11, 15, 16, 18, 20, 23, 26, 28, 32, 33, 34, 36,
+                      37, 40, 42, 44, 45, 47, 50, 51, 52, 54, 56, 57, 60, 61]
+            part_c = split.create_nested_kfold_subject_split(ctl_id, Nouter, Ninner)
+            part_p = split.create_nested_kfold_subject_split(psy_id, Nouter, Ninner)
+            partition_list = split.merge_partition_lists(part_c, part_p, Nouter, Ninner)
             
         else:
             # three subjects were excluded for the known issue of having 
@@ -476,8 +492,12 @@ if __name__ == '__main__':
         
         # to run a loso, just fix inner to 1 
         foldToEval = outerFold*Ninner + innerFold
-        
-        if taskToEval == 'alzheimer':
+
+        if taskToEval.casefold() == 'sleep':
+            t = [i for i in range(1, Nsubj)]
+            partition_list = split.create_nested_kfold_subject_split(Nsubj, Nouter, Ninner)
+            
+        elif taskToEval == 'alzheimer':
             a = [i for i in range(1,37)]  # ALZ = subjects 1 to 36;
             c = [i for i in range(37,66)] # CTL = subjects 37 to 65;
             f = [i for i in range(66,89)] # FTD = subjects 66 to 88
@@ -500,6 +520,10 @@ if __name__ == '__main__':
                 partition_list_1[i][0] = list(sorted(k for k in partition_list_1[i][0] if k <= 50))
                 partition_list_1[i][1] = list(sorted(k for k in partition_list_1[i][1] if k <= 50))
                 partition_list_1[i][2] = list(sorted(k for k in partition_list_1[i][2] if k <= 50))
+        
+        elif taskToEval.casefold() == 'psychosis':
+            t = [i for i in range(1, Nsubj)]
+            partition_list = split.create_nested_kfold_subject_split(t, Nouter, Ninner)
             
         else:
             # three subjects were excluded for the known issue of having 
@@ -567,6 +591,10 @@ if __name__ == '__main__':
             Chan = 32
         elif taskToEval == 'bci':
             Chan = 61
+        elif taskToEval == 'sleep':
+            Chan = 59
+        elif taskToEval == 'psychosis':
+            Chan = 56
     else:
         Chan = 61
     
@@ -593,6 +621,10 @@ if __name__ == '__main__':
     # It is a single number for every task except for PD that merges two datasets
     if taskToEval == 'alzheimer':
         datasetID = '10'
+    elif taskToEval.casefold() == 'sleep':
+        datasetID = '20'
+    elif taskToEval.casefold() == 'psychosis':
+        datasetID = '7'
     elif taskToEval == 'bci':
         datasetID = '99'
     else:
@@ -604,6 +636,10 @@ if __name__ == '__main__':
         class_labels = ['CTL', 'FTD', 'AD']
     elif taskToEval == 'bci':
         class_labels = ['LeftMove', 'RightMove', 'LeftImg', 'RightImg']
+    elif taskToEval.casefold() == 'sleep':
+        class_labels = ['Normal', 'Deprived']
+    elif taskToEval.casefold() == 'psychosis':
+        class_labels = ['CTL', 'FEP']
     else:
         class_labels = ['CTL', 'PD']
         
@@ -976,6 +1012,10 @@ if __name__ == '__main__':
             stride = 3, batch_momentum = 0.1, dropRate = 0.5,
             max_norm = None, max_dense_norm = None
         )
+    elif modelToEval.casefold() == 'eegnet':
+        Mdl = zoo.EEGNet(
+            nb_classes, Chan, Samples, depthwise_max_norm=None, norm_rate=None
+        )
     elif modelToEval.casefold() == 'resnet':
         Mdl = zoo.ResNet1D(
             nb_classes, Chan, Samples, Layers = [3, 4, 6, 3],
@@ -998,6 +1038,7 @@ if __name__ == '__main__':
             print('used learning rate', lr)
     gamma = 0.995
     optimizer = torch.optim.Adam(Mdl.parameters(), lr = lr)
+    #optimizer = torch.optim.Adam(Mdl.parameters(), lr = lr, weight_decay=0.1)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma = gamma)
     
     # Define selfEEG's EarlyStopper with large patience to act as a model checkpoint
@@ -1074,11 +1115,21 @@ if __name__ == '__main__':
         start_piece_mdl = 'PDClassification/Models/'
         start_piece_res = 'PDClassification/Results/'
         task_piece = 'pds'
+    elif taskToEval.casefold() == 'psychosis':
+        start_piece_mdl = 'FEPClassification/Models/'
+        start_piece_res = 'FEPClassification/Results/'
+        task_piece = 'fep'
+    elif taskToEval.casefold() == 'sleep':
+        start_piece_mdl = 'SleepClassification/Models/'
+        start_piece_res = 'SleepClassification/Results/'
+        task_piece = 'slp'
     
     if modelToEval.casefold() == 'shallownet':
         mdl_piece = 'shn'
     elif modelToEval.casefold() == 'deepconvnet':
         mdl_piece = 'dcn'
+    elif modelToEval.casefold() == 'eegnet':
+        mdl_piece = 'egn'
     elif modelToEval.casefold() == 'resnet':
         mdl_piece = 'res'
 
@@ -1157,5 +1208,5 @@ if __name__ == '__main__':
     #with open(results_path, 'wb') as handle:
     #    pickle.dump(scores, handle, protocol = pickle.HIGHEST_PROTOCOL)
     
-    #if verbose:
-    #    print('run complete')
+    if verbose:
+        print('run complete')

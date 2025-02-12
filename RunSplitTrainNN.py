@@ -80,7 +80,7 @@ if __name__ == '__main__':
     
     Example:
     
-    $ python RunSplitTraining -d /path/to/data
+    $ python RunSplitTrainNN -d /path/to/data
     
     """
     parser = argparse.ArgumentParser(description=help_d)
@@ -139,10 +139,10 @@ if __name__ == '__main__':
         nargs     = '?',
         required  = False,
         default   = 'shallownet',
-        choices   =['shallownet', 'deepconvnet', 'resnet'],
+        choices   =['shallownet', 'eegnet', 'deepconvnet', 'resnet'],
         help      = """
         The model to evaluate. It can be one of the following:
-        1) shallownet; 2) deepconvnet; 3) resnet;
+        1) shallownet; 2) eegnet; 3) deepconvnet; 4) resnet;
         """,
     )
     parser.add_argument(
@@ -780,6 +780,10 @@ if __name__ == '__main__':
     # define model
     if modelToEval.casefold() == 'shallownet':
         Mdl = zoo.ShallowNet(nb_classes, Chan, Samples)
+    elif modelToEval.casefold() == 'eegnet':
+        Mdl = zoo.EEGNet(
+            nb_classes, Chan, Samples, depthwise_max_norm=None, norm_rate=None
+        )
     elif modelToEval.casefold() == 'deepconvnet':
         Mdl = zoo.DeepConvNet(
             nb_classes, Chan, Samples, kernLength = 10, F = 25, Pool = 3,
@@ -897,6 +901,8 @@ if __name__ == '__main__':
     
     if modelToEval.casefold() == 'shallownet':
         mdl_piece = 'shn'
+    elif modelToEval.casefold() == 'eegnet':
+        mdl_piece = 'egn'
     elif modelToEval.casefold() == 'deepconvnet':
         mdl_piece = 'dcn'
     elif modelToEval.casefold() == 'resnet':
