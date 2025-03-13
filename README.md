@@ -77,19 +77,19 @@ Here some example.
 1) K-Fold vs Leave-N-Subject-Out
 
 <div align="center">
-  <img src="Images/LightTheme/Kfold_vs_LNSO_model_ShallowConvNet.png" width="500">
+  <img src="Images/Kfold_vs_LNSO_model_ShallowConvNet.png" width="500">
 </div>
 
 2) Leave-N-Subject-Out vs Nested-Leave-N-Subject-Out
 
 <div align="center">
-  <img src="Images/LightTheme/LNSO_vs_NLNSO_model_T-ResNet_all_tasks.png" width="500">
+  <img src="Images/LNSO_vs_NLNSO_model_EEGNet_all_tasks.png" width="500">
 </div>
 
 3) Leave-One-Subject-Out vs Nested-Leave-One-Subject-Out
 
 <div align="center">
-  <img src="Images/LightTheme/LOSO_vs_FNLOSO_model_T-ResNet_tasks_Parkinson.png">
+  <img src="Images/LOSO_vs_FNLOSO_model_ShallowConvNet_tasks_Alzheimer.png">
 </div>
 
 ## Provided code
