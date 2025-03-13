@@ -5,7 +5,7 @@ This is the official repository for the research paper
     Rethinking how to evaluate model performance
     in deep learning-based electroencephalogram analysis 
 
-Submitted to Biomedical Signal Processing and Control.
+Submitted to Computers in Biology and Medicine.
 
 In this work, we have investigated the the role of data
 partition on the performance assessment of EEG deep learning
@@ -13,10 +13,10 @@ models through cross-validation analysis.
 Five distinct cross-validation strategies that operate either at the
 sample or at subject level are compared across three representative
 clinical and non-clinical classification tasks, using
-three established DL architectures with increased complexity.
-The analysis of almost one hundred thousand different
+four established DL architectures with increased complexity.
+The analysis of more than 100000 different
 trained models revealed strong differences between
-sample-based and subject-based approaches (e.g., Leave-N-Subject-Out),
+sample-based and subject-based approaches (e.g., Leave-N-Subjects-Out),
 highlighting how subject-specific characteristics can
 be learned and leveraged during inference to inflate performance
 estimates. Such findings confirm the necessity
@@ -54,6 +54,7 @@ Tasks:
   
 Models:
 * **ShallowConvNet**
+* **EEGNet**
 * **DeepConvNet**
 * **T-ResNet**
 
