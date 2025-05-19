@@ -2,8 +2,8 @@
 
 This is the official repository for the research paper 
 
-    Rethinking how to evaluate model performance
-    in deep learning-based electroencephalogram analysis 
+    The role of data partitioning on the performance of EEG-based deep
+    learning models in supervised cross-subject analysis: a preliminary study
 
 Submitted to Computers in Biology and Medicine.
 
@@ -95,8 +95,10 @@ Here some example.
 
 ## Provided code
 
-Scripts used to generate the results presented in the paper
-are available in this repository.
+The scripts used to generate the results presented in the paper
+are available in this repository, which is derived from the following
+[GitHub repo](https://github.com/MedMaxLab/eegprepro)
+associated with another study we published.
 Additional instructions on how to replicate
 our experimental pipeline are provided in the
 [docs](https://github.com/MedMaxLab/eegpartition/tree/main/docs) folder.
@@ -106,15 +108,15 @@ our experimental pipeline are provided in the
 Performance metrics of each trained model are collected and organized in
 the **ResultsTable.csv** file.
 Due to the large number of training instances, model weights and results are not directly stored in this repository.
-We plan to release them with zenodo, together with the paper and the code-base
+We plan to release them in zenodo.
 
 ## Authors and Citation
 
-If you find codes and results useful for your research,
-please concider citing our work. It would help us to continue our research.
-At the moment, we are working on a research paper to submit to
-Biomedical Signal Processing and Control.
-
+If you find the codes and results useful for your research,
+Please consider citing our work.
+It would help us continue our research.
+Currently, the paper has undergone two rounds of revision.
+The current version is available on Arxiv.
 
 Contributors:
 
