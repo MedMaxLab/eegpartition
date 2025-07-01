@@ -1,11 +1,13 @@
-# How important is data partition in EEG deep learning applications?
+# How important is data partitioning in EEG deep learning applications?
 
 This is the official repository for the research paper 
 
     The role of data partitioning on the performance of EEG-based deep
     learning models in supervised cross-subject analysis: a preliminary study
 
-Submitted to Computers in Biology and Medicine.
+Published in Computers in Biology and Medicine.
+
+[![DOI:10.1016/j.compbiomed.2025.110608](https://img.shields.io/badge/DOI-10.1016/j.compbiomed.2025.110608-blue)](https://www.sciencedirect.com/science/article/pii/S001048252500959X)
 
 In this work, we have investigated the the role of data
 partition on the performance assessment of EEG deep learning
